@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Pressable, Modal } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated';
+import { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, Pressable, Modal, Animated } from 'react-native';
 import { Menu, Search, Crown, Heart, Settings, Info, X, CheckCircle } from 'lucide-react-native';
 import { MOCK_USER } from '@/constants/venues';
 
@@ -8,25 +7,15 @@ export default function TopNavigation() {
   const [menuVisible, setMenuVisible] = useState(false);
   const userTier = MOCK_USER.membershipTier;
   const isPlus = userTier === 'plus';
-  const translateX = useSharedValue(-320);
+  const slideAnim = useRef(new Animated.Value(-320)).current;
 
   useEffect(() => {
-    if (menuVisible) {
-      translateX.value = withTiming(0, {
-        duration: 300,
-        easing: Easing.out(Easing.ease),
-      });
-    } else {
-      translateX.value = withTiming(-320, {
-        duration: 250,
-        easing: Easing.in(Easing.ease),
-      });
-    }
+    Animated.timing(slideAnim, {
+      toValue: menuVisible ? 0 : -320,
+      duration: menuVisible ? 300 : 250,
+      useNativeDriver: true,
+    }).start();
   }, [menuVisible]);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-  }));
 
   return (
     <>
@@ -67,7 +56,7 @@ export default function TopNavigation() {
           style={styles.modalOverlay}
           onPress={() => setMenuVisible(false)}
         >
-          <Animated.View style={[styles.menuContainer, animatedStyle]}>
+          <Animated.View style={[styles.menuContainer, { transform: [{ translateX: slideAnim }] }]}>
             <Pressable style={styles.menuContent} onPress={(e) => e.stopPropagation()}>
             <View style={styles.menuHeader}>
               <Text style={styles.menuTitle}>Menu</Text>
