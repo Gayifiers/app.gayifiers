@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Pressable, Modal, Animated } from 'react-native';
-import { Menu, Search, Crown, Heart, Settings, Info, X, CheckCircle } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
+import { Menu, Search, Crown, Heart, Settings, X, CheckCircle } from 'lucide-react-native';
 import { MOCK_USER } from '@/constants/venues';
 
 export default function TopNavigation() {
+  const router = useRouter();
   const [menuVisible, setMenuVisible] = useState(false);
   const userTier = MOCK_USER.membershipTier;
   const isPlus = userTier === 'plus';
@@ -117,21 +119,13 @@ export default function TopNavigation() {
                   styles.menuItem,
                   pressed && styles.menuItemPressed,
                 ]}
-                onPress={() => setMenuVisible(false)}
+                onPress={() => {
+                  setMenuVisible(false);
+                  router.push('/settings');
+                }}
               >
                 <Settings size={18} color="#FFFFFF" />
                 <Text style={styles.menuItemText}>Settings</Text>
-              </Pressable>
-
-              <Pressable
-                style={({ pressed }) => [
-                  styles.menuItem,
-                  pressed && styles.menuItemPressed,
-                ]}
-                onPress={() => setMenuVisible(false)}
-              >
-                <Info size={18} color="#FFFFFF" />
-                <Text style={styles.menuItemText}>About Gayifiers</Text>
               </Pressable>
             </View>
             </Pressable>
