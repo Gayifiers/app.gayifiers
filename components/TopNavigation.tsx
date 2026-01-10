@@ -121,7 +121,9 @@ export default function TopNavigation() {
                 ]}
                 onPress={() => {
                   setMenuVisible(false);
-                  router.push('/settings');
+                  setTimeout(() => {
+                    router.push('/settings');
+                  }, 300);
                 }}
               >
                 <Settings size={18} color="#FFFFFF" />

@@ -1,10 +1,13 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { User, Shield, Heart, Crown, Info } from 'lucide-react-native';
+import { User, Shield, Heart, Crown, Info, Settings } from 'lucide-react-native';
 import { MOCK_USER } from '@/constants/venues';
 import TopNavigation from '@/components/TopNavigation';
+import { STRINGS } from '@/constants/strings';
+import { useRouter } from 'expo-router';
 
 export default function ProfileScreen() {
+  const router = useRouter();
   const userTier = MOCK_USER.membershipTier;
 
   const tierColors = {
@@ -19,12 +22,34 @@ export default function ProfileScreen() {
     plus: '#1A1A0D',
   };
 
+  const getTierLabel = (tier: string) => {
+    switch (tier) {
+      case 'guest':
+        return STRINGS.TIER_GUEST;
+      case 'free':
+        return STRINGS.TIER_FREE_MEMBER;
+      case 'plus':
+        return STRINGS.TIER_PLUS_MEMBER;
+      default:
+        return STRINGS.TIER_GUEST;
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <TopNavigation />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.title}>Profile</Text>
+          <Text style={styles.title}>{STRINGS.PROFILE_TITLE}</Text>
+          <Pressable
+            style={({ pressed }) => [
+              styles.settingsButton,
+              pressed && styles.settingsButtonPressed,
+            ]}
+            onPress={() => router.push('/settings')}
+          >
+            <Settings size={24} color="#FFFFFF" />
+          </Pressable>
         </View>
 
         <View style={styles.profileCard}>
@@ -35,7 +60,7 @@ export default function ProfileScreen() {
             <User size={32} color={tierColors[userTier]} />
           </View>
 
-          <Text style={styles.userName}>Traveler</Text>
+          <Text style={styles.userName}>{STRINGS.USER_NAME}</Text>
 
           <View style={[
             styles.tierBadge,
@@ -43,86 +68,75 @@ export default function ProfileScreen() {
           ]}>
             {userTier === 'plus' && <Crown size={16} color={tierColors[userTier]} />}
             <Text style={[styles.tierText, { color: tierColors[userTier] }]}>
-              {userTier === 'guest' && 'Guest'}
-              {userTier === 'free' && 'Free Member'}
-              {userTier === 'plus' && 'Plus Member'}
+              {getTierLabel(userTier)}
             </Text>
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>About This App</Text>
+          <Text style={styles.sectionTitle}>{STRINGS.ABOUT_TITLE}</Text>
           <View style={styles.infoCard}>
             <Heart size={20} color="#9D4EDD" />
             <Text style={styles.infoText}>
-              This is a travel guide designed to help LGBTQ+ travelers discover
-              welcoming venues and safe spaces around the world. We curate inclusive
-              bars, cafes, restaurants, and accommodations where you can be yourself.
+              {STRINGS.ABOUT_DESCRIPTION}
             </Text>
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Privacy & Location</Text>
+          <Text style={styles.sectionTitle}>{STRINGS.PRIVACY_TITLE}</Text>
           <View style={styles.privacyCard}>
             <Shield size={20} color="#9D4EDD" />
             <View style={styles.privacyTextContainer}>
-              <Text style={styles.privacyTitle}>Your Privacy Matters</Text>
+              <Text style={styles.privacyTitle}>{STRINGS.PRIVACY_SUBTITLE}</Text>
               <Text style={styles.privacyText}>
-                Location is used only to show distance to venues. We never track
-                your movements, store your location history, or share your data
-                with third parties.
-                {'\n\n'}
-                This is a content discovery app, not a social network. There is
-                no real-time tracking, no user-to-user messaging, and no public
-                check-ins.
+                {STRINGS.PRIVACY_DESCRIPTION}
               </Text>
             </View>
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Membership Tiers</Text>
+          <Text style={styles.sectionTitle}>{STRINGS.MEMBERSHIP_TITLE}</Text>
 
           <View style={styles.tierInfoCard}>
             <View style={styles.tierInfoHeader}>
-              <Text style={styles.tierInfoTitle}>Guest</Text>
-              <Text style={styles.tierInfoPrice}>Free</Text>
+              <Text style={styles.tierInfoTitle}>{STRINGS.TIER_GUEST_NAME}</Text>
+              <Text style={styles.tierInfoPrice}>{STRINGS.TIER_GUEST_PRICE}</Text>
             </View>
-            <Text style={styles.tierInfoFeature}>• Browse venues</Text>
-            <Text style={styles.tierInfoFeature}>• View categories</Text>
+            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_GUEST_FEATURE_1}</Text>
+            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_GUEST_FEATURE_2}</Text>
           </View>
 
           <View style={styles.tierInfoCard}>
             <View style={styles.tierInfoHeader}>
-              <Text style={styles.tierInfoTitle}>Free</Text>
-              <Text style={styles.tierInfoPrice}>Free</Text>
+              <Text style={styles.tierInfoTitle}>{STRINGS.TIER_FREE_NAME}</Text>
+              <Text style={styles.tierInfoPrice}>{STRINGS.TIER_FREE_PRICE}</Text>
             </View>
-            <Text style={styles.tierInfoFeature}>• All Guest features</Text>
-            <Text style={styles.tierInfoFeature}>• Access to select deals</Text>
-            <Text style={styles.tierInfoFeature}>• Distance information</Text>
+            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_FREE_FEATURE_1}</Text>
+            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_FREE_FEATURE_2}</Text>
+            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_FREE_FEATURE_3}</Text>
           </View>
 
           <View style={[styles.tierInfoCard, styles.tierInfoCardPlus]}>
             <View style={styles.tierInfoHeader}>
               <View style={styles.tierTitleRow}>
-                <Text style={styles.tierInfoTitle}>Plus</Text>
+                <Text style={styles.tierInfoTitle}>{STRINGS.TIER_PLUS_NAME}</Text>
                 <Crown size={18} color="#FFD700" />
               </View>
-              <Text style={styles.tierInfoPrice}>Premium</Text>
+              <Text style={styles.tierInfoPrice}>{STRINGS.TIER_PLUS_PRICE}</Text>
             </View>
-            <Text style={styles.tierInfoFeature}>• All Free features</Text>
-            <Text style={styles.tierInfoFeature}>• Access to all exclusive deals</Text>
-            <Text style={styles.tierInfoFeature}>• Priority support</Text>
-            <Text style={styles.tierInfoFeature}>• Early access to new venues</Text>
+            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_PLUS_FEATURE_1}</Text>
+            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_PLUS_FEATURE_2}</Text>
+            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_PLUS_FEATURE_3}</Text>
+            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_PLUS_FEATURE_4}</Text>
           </View>
         </View>
 
         <View style={styles.disclaimer}>
           <Info size={16} color="#999999" />
           <Text style={styles.disclaimerText}>
-            This is a demonstration app. No actual membership or payment processing
-            is implemented in this version.
+            {STRINGS.DISCLAIMER}
           </Text>
         </View>
 
@@ -141,6 +155,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 16,
@@ -149,6 +166,19 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '800',
     color: '#FFFFFF',
+  },
+  settingsButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#1A1A1A',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#2A2A2A',
+  },
+  settingsButtonPressed: {
+    opacity: 0.7,
   },
   profileCard: {
     backgroundColor: '#0A0A0A',

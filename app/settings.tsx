@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight, X } from 'lucide-react-native';
 
 type SettingsModal = 'about' | 'trending' | 'privacy' | 'contact' | null;
 
-export default function Settings() {
+export default function SettingsScreen() {
   const router = useRouter();
   const [activeModal, setActiveModal] = useState<SettingsModal>(null);
 
