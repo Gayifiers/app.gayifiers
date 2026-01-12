@@ -1,100 +1,53 @@
-import { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, ScrollView, Modal } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react-native';
-
-type SettingsModal = 'about' | 'trending' | 'privacy' | 'contact' | null;
+import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 
 export default function SettingsScreen() {
   const router = useRouter();
-  const [activeModal, setActiveModal] = useState<SettingsModal>(null);
 
-  const settingsItems = [
-    {
-      id: 'about',
-      title: 'About Gayifiers',
-      modal: 'about' as SettingsModal,
-    },
-    {
-      id: 'trending',
-      title: 'How Trending Works',
-      modal: 'trending' as SettingsModal,
-    },
-    {
-      id: 'privacy',
-      title: 'Privacy & Data',
-      modal: 'privacy' as SettingsModal,
-    },
-    {
-      id: 'contact',
-      title: 'Contact & Feedback',
-      modal: 'contact' as SettingsModal,
-    },
-  ];
+  const handleAccountPress = () => {
+    Alert.alert(
+      'Preview Feature',
+      'Account login and membership management will be available in the full version.',
+      [{ text: 'OK' }]
+    );
+  };
 
-  const renderModalContent = () => {
-    switch (activeModal) {
-      case 'about':
-        return (
-          <>
-            <Text style={styles.modalTitle}>About Gayifiers</Text>
-            <Text style={styles.modalText}>
-              Gayifiers is a travel-focused guide for LGBTQ+ venues and gay-friendly spaces.
-            </Text>
-            <Text style={[styles.modalText, { marginTop: 16 }]}>
-              We help you discover safe, welcoming places wherever you travel, connecting you with vibrant communities around the world.
-            </Text>
-          </>
-        );
-      case 'trending':
-        return (
-          <>
-            <Text style={styles.modalTitle}>How Trending Works</Text>
-            <Text style={styles.modalText}>
-              Trending places are based on aggregated and anonymized activity. We do not track real-time locations or show individual users.
-            </Text>
-            <Text style={[styles.modalText, { marginTop: 16 }]}>
-              The trending algorithm considers factors like venue popularity, recent check-ins, and community engagement to surface the most active spots.
-            </Text>
-            <Text style={[styles.modalText, { marginTop: 16 }]}>
-              Your privacy is protected at all times. Individual user data is never exposed or sold to third parties.
-            </Text>
-          </>
-        );
-      case 'privacy':
-        return (
-          <>
-            <Text style={styles.modalTitle}>Privacy & Data</Text>
-            <Text style={styles.modalText}>
-              No account is required in this preview version. We do not collect personal data or track background location.
-            </Text>
-            <Text style={[styles.modalText, { marginTop: 16 }]}>
-              This is an MVP preview designed to demonstrate the app concept. When the full version launches, we will implement optional account features with clear privacy controls.
-            </Text>
-            <Text style={[styles.modalText, { marginTop: 16 }]}>
-              We are committed to building a safe, trustworthy platform that respects your privacy and data rights.
-            </Text>
-          </>
-        );
-      case 'contact':
-        return (
-          <>
-            <Text style={styles.modalTitle}>Contact & Feedback</Text>
-            <Text style={styles.modalText}>
-              We'd love to hear from you. Whether you have questions, feedback, or suggestions for improvement, please reach out:
-            </Text>
-            <View style={styles.emailContainer}>
-              <Text style={styles.emailText}>feedback@gayifiers.com</Text>
-            </View>
-            <Text style={[styles.modalText, { marginTop: 16 }]}>
-              Your input helps us build a better experience for the LGBTQ+ community.
-            </Text>
-          </>
-        );
-      default:
-        return null;
-    }
+  const handleMembershipPress = () => {
+    Alert.alert(
+      'Preview Feature',
+      'Membership features will be unlocked after login in the full version.',
+      [{ text: 'OK' }]
+    );
+  };
+
+  const handleFavoritesPress = () => {
+    router.push('/(tabs)/favorites');
+  };
+
+  const handleNotificationsPress = () => {
+    Alert.alert(
+      'Preview Feature',
+      'Notifications will be available in a future update.',
+      [{ text: 'OK' }]
+    );
+  };
+
+  const handleLanguagePress = () => {
+    Alert.alert(
+      'Preview Feature',
+      'Language switching will be available in a future update. Currently the app follows your system language.',
+      [{ text: 'OK' }]
+    );
+  };
+
+  const handleAboutPress = () => {
+    Alert.alert(
+      'Gayifiers',
+      'Gayifiers is a curated guide for international gay travelers.\n\nThis is an MVP preview version.',
+      [{ text: 'OK' }]
+    );
   };
 
   return (
@@ -109,48 +62,106 @@ export default function SettingsScreen() {
 
       <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
         <View style={styles.section}>
-          {settingsItems.map((item) => (
-            <Pressable
-              key={item.id}
-              style={({ pressed }) => [
-                styles.settingsItem,
-                pressed && styles.settingsItemPressed,
-              ]}
-              onPress={() => setActiveModal(item.modal)}
-            >
-              <Text style={styles.settingsItemText}>{item.title}</Text>
-              <ChevronRight size={20} color="#666666" />
-            </Pressable>
-          ))}
-        </View>
+          <Text style={styles.sectionTitle}>Account</Text>
 
-        <View style={styles.versionContainer}>
-          <Text style={styles.versionText}>Gayifiers v0.1 (Preview)</Text>
-        </View>
-      </ScrollView>
-
-      <Modal
-        visible={activeModal !== null}
-        animationType="fade"
-        transparent
-        onRequestClose={() => setActiveModal(null)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalHeader}>
-              <Pressable
-                style={styles.modalCloseButton}
-                onPress={() => setActiveModal(null)}
-              >
-                <X size={24} color="#FFFFFF" />
-              </Pressable>
+          <Pressable
+            style={({ pressed }) => [
+              styles.settingsRow,
+              pressed && styles.settingsRowPressed,
+            ]}
+            onPress={handleAccountPress}
+          >
+            <Text style={styles.rowTitle}>Account</Text>
+            <View style={styles.rowRight}>
+              <Text style={styles.rowValue}>Guest</Text>
+              <ChevronRight size={18} color="#666666" />
             </View>
-            <ScrollView style={styles.modalContent}>
-              {renderModalContent()}
-            </ScrollView>
+          </Pressable>
+
+          <Pressable
+            style={({ pressed }) => [
+              styles.settingsRow,
+              pressed && styles.settingsRowPressed,
+            ]}
+            onPress={handleMembershipPress}
+          >
+            <Text style={styles.rowTitle}>Membership</Text>
+            <View style={styles.rowRight}>
+              <Text style={styles.rowValue}>Not activated</Text>
+              <ChevronRight size={18} color="#666666" />
+            </View>
+          </Pressable>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Preferences</Text>
+
+          <Pressable
+            style={({ pressed }) => [
+              styles.settingsRow,
+              pressed && styles.settingsRowPressed,
+            ]}
+            onPress={handleFavoritesPress}
+          >
+            <View style={styles.rowLeft}>
+              <Text style={styles.rowTitle}>Favorites</Text>
+              <Text style={styles.rowSubtitle}>Save places for later</Text>
+            </View>
+            <ChevronRight size={18} color="#666666" />
+          </Pressable>
+
+          <Pressable
+            style={({ pressed }) => [
+              styles.settingsRow,
+              pressed && styles.settingsRowPressed,
+            ]}
+            onPress={handleNotificationsPress}
+          >
+            <Text style={styles.rowTitle}>Notifications</Text>
+            <View style={styles.rowRight}>
+              <Text style={styles.rowValue}>Off</Text>
+              <ChevronRight size={18} color="#666666" />
+            </View>
+          </Pressable>
+
+          <Pressable
+            style={({ pressed }) => [
+              styles.settingsRow,
+              pressed && styles.settingsRowPressed,
+            ]}
+            onPress={handleLanguagePress}
+          >
+            <View style={styles.rowLeft}>
+              <Text style={styles.rowTitle}>App Language</Text>
+              <Text style={styles.rowSubtitle}>Multi-language support coming soon</Text>
+            </View>
+            <View style={styles.rowRight}>
+              <Text style={styles.rowValue}>System Default</Text>
+              <ChevronRight size={18} color="#666666" />
+            </View>
+          </Pressable>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>About</Text>
+
+          <Pressable
+            style={({ pressed }) => [
+              styles.settingsRow,
+              pressed && styles.settingsRowPressed,
+            ]}
+            onPress={handleAboutPress}
+          >
+            <Text style={styles.rowTitle}>About Gayifiers</Text>
+            <ChevronRight size={18} color="#666666" />
+          </Pressable>
+
+          <View style={styles.settingsRowDisabled}>
+            <Text style={styles.rowTitle}>App Version</Text>
+            <Text style={styles.rowValueDisabled}>v0.1.0 (MVP)</Text>
           </View>
         </View>
-      </Modal>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -182,96 +193,79 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    paddingTop: 16,
+    paddingVertical: 16,
   },
   section: {
+    marginBottom: 32,
     paddingHorizontal: 16,
   },
-  settingsItem: {
+  sectionTitle: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#666666',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 12,
+    paddingHorizontal: 4,
+  },
+  settingsRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 16,
+    paddingVertical: 14,
     paddingHorizontal: 16,
     backgroundColor: '#0A0A0A',
-    borderRadius: 12,
+    borderRadius: 10,
     marginBottom: 8,
     borderWidth: 1,
     borderColor: '#1A1A1A',
+    minHeight: 56,
   },
-  settingsItemPressed: {
+  settingsRowPressed: {
     opacity: 0.7,
     backgroundColor: '#121212',
   },
-  settingsItemText: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#FFFFFF',
-  },
-  versionContainer: {
+  settingsRowDisabled: {
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 32,
-  },
-  versionText: {
-    fontSize: 12,
-    color: '#666666',
-    fontWeight: '500',
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.95)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  modalContainer: {
-    width: '100%',
-    maxWidth: 500,
+    justifyContent: 'space-between',
+    paddingVertical: 14,
+    paddingHorizontal: 16,
     backgroundColor: '#0A0A0A',
-    borderRadius: 16,
+    borderRadius: 10,
+    marginBottom: 8,
     borderWidth: 1,
     borderColor: '#1A1A1A',
-    maxHeight: '80%',
+    minHeight: 56,
+    opacity: 0.5,
   },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 8,
+  rowLeft: {
+    flex: 1,
   },
-  modalCloseButton: {
-    padding: 4,
-  },
-  modalContent: {
-    paddingHorizontal: 24,
-    paddingBottom: 24,
-  },
-  modalTitle: {
-    fontSize: 22,
-    fontWeight: '700',
+  rowTitle: {
+    fontSize: 16,
+    fontWeight: '500',
     color: '#FFFFFF',
-    marginBottom: 16,
   },
-  modalText: {
-    fontSize: 15,
-    lineHeight: 22,
-    color: '#CCCCCC',
+  rowSubtitle: {
+    fontSize: 13,
     fontWeight: '400',
+    color: '#666666',
+    marginTop: 2,
   },
-  emailContainer: {
-    marginTop: 16,
-    padding: 16,
-    backgroundColor: '#121212',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#9D4EDD',
+  rowRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
-  emailText: {
+  rowValue: {
     fontSize: 15,
-    fontWeight: '600',
-    color: '#9D4EDD',
-    textAlign: 'center',
+    fontWeight: '400',
+    color: '#999999',
+  },
+  rowValueDisabled: {
+    fontSize: 15,
+    fontWeight: '400',
+    color: '#666666',
   },
 });

@@ -9,7 +9,7 @@ export default function TopNavigation() {
   const [menuVisible, setMenuVisible] = useState(false);
   const userTier = MOCK_USER.membershipTier;
   const isPlus = userTier === 'plus';
-  const slideAnim = useRef(new Animated.Value(-320)).current;
+  const slideAnim = useRef(new Animated.Value(-280)).current;
 
   useEffect(() => {
     Animated.timing(slideAnim, {
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     bottom: 0,
-    width: 320,
+    width: 280,
     backgroundColor: '#0A0A0A',
     borderRightWidth: 1,
     borderRightColor: '#1A1A1A',

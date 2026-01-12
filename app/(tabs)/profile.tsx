@@ -1,38 +1,26 @@
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { User, Shield, Heart, Crown, Info, Settings } from 'lucide-react-native';
-import { MOCK_USER } from '@/constants/venues';
+import { User, ChevronRight, Settings } from 'lucide-react-native';
 import TopNavigation from '@/components/TopNavigation';
-import { STRINGS } from '@/constants/strings';
 import { useRouter } from 'expo-router';
 
 export default function ProfileScreen() {
   const router = useRouter();
-  const userTier = MOCK_USER.membershipTier;
 
-  const tierColors = {
-    guest: '#666666',
-    free: '#9D4EDD',
-    plus: '#FFD700',
+  const handleFavoritesPress = () => {
+    Alert. alert(
+      'Preview Feature',
+      'Login is required to use Favorites in the full version.',
+      [{ text: 'OK' }]
+    );
   };
 
-  const tierBackgrounds = {
-    guest: '#1A1A1A',
-    free: '#1A0F26',
-    plus: '#1A1A0D',
-  };
-
-  const getTierLabel = (tier: string) => {
-    switch (tier) {
-      case 'guest':
-        return STRINGS.TIER_GUEST;
-      case 'free':
-        return STRINGS.TIER_FREE_MEMBER;
-      case 'plus':
-        return STRINGS.TIER_PLUS_MEMBER;
-      default:
-        return STRINGS.TIER_GUEST;
-    }
+  const handleLanguagePress = () => {
+    Alert.alert(
+      'Preview Feature',
+      'Language switching will be available in a future update.',
+      [{ text: 'OK' }]
+    );
   };
 
   return (
@@ -40,7 +28,7 @@ export default function ProfileScreen() {
       <TopNavigation />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.title}>{STRINGS.PROFILE_TITLE}</Text>
+          <Text style={styles.title}>Profile</Text>
           <Pressable
             style={({ pressed }) => [
               styles.settingsButton,
@@ -52,92 +40,85 @@ export default function ProfileScreen() {
           </Pressable>
         </View>
 
-        <View style={styles.profileCard}>
-          <View style={[
-            styles.avatarCircle,
-            { backgroundColor: tierBackgrounds[userTier] }
-          ]}>
-            <User size={32} color={tierColors[userTier]} />
+        <View style={styles.identityCard}>
+          <View style={styles.avatarCircle}>
+            <User size={32} color="#666666" />
+          </View>
+          <Text style={styles.identityTitle}>Visitor (Preview Mode)</Text>
+          <Text style={styles.identitySubtitle}>
+            You're currently browsing Gayifiers as a visitor.
+          </Text>
+          <Text style={styles.identityNote}>
+            Login and membership features will be available in the full version.
+          </Text>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Membership Levels</Text>
+          <Text style={styles.sectionDescription}>
+            Future access levels will include:
+          </Text>
+
+          <View style={styles.membershipCard}>
+            <Text style={styles.membershipTier}>Visitor</Text>
+            <Text style={styles.membershipFeature}>
+              Browse venues and previews
+            </Text>
           </View>
 
-          <Text style={styles.userName}>{STRINGS.USER_NAME}</Text>
+          <View style={styles.membershipCard}>
+            <Text style={styles.membershipTier}>Member</Text>
+            <Text style={styles.membershipFeature}>
+              Save favorites and unlock full venue details
+            </Text>
+          </View>
 
-          <View style={[
-            styles.tierBadge,
-            { backgroundColor: tierBackgrounds[userTier] }
-          ]}>
-            {userTier === 'plus' && <Crown size={16} color={tierColors[userTier]} />}
-            <Text style={[styles.tierText, { color: tierColors[userTier] }]}>
-              {getTierLabel(userTier)}
+          <View style={styles.membershipCard}>
+            <Text style={styles.membershipTier}>Pro</Text>
+            <Text style={styles.membershipFeature}>
+              Priority access, advanced filters, and exclusive content
             </Text>
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{STRINGS.ABOUT_TITLE}</Text>
-          <View style={styles.infoCard}>
-            <Heart size={20} color="#9D4EDD" />
-            <Text style={styles.infoText}>
-              {STRINGS.ABOUT_DESCRIPTION}
-            </Text>
-          </View>
-        </View>
+          <Text style={styles.sectionTitle}>Preferences</Text>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{STRINGS.PRIVACY_TITLE}</Text>
-          <View style={styles.privacyCard}>
-            <Shield size={20} color="#9D4EDD" />
-            <View style={styles.privacyTextContainer}>
-              <Text style={styles.privacyTitle}>{STRINGS.PRIVACY_SUBTITLE}</Text>
-              <Text style={styles.privacyText}>
-                {STRINGS.PRIVACY_DESCRIPTION}
+          <Pressable
+            style={({ pressed }) => [
+              styles.preferenceRow,
+              pressed && styles.preferenceRowPressed,
+            ]}
+            onPress={handleFavoritesPress}
+          >
+            <View style={styles.preferenceLeft}>
+              <Text style={styles.preferenceTitle}>Favorites</Text>
+              <Text style={styles.preferenceSubtitle}>
+                Save places you love (login required)
               </Text>
             </View>
-          </View>
+            <ChevronRight size={18} color="#666666" />
+          </Pressable>
+
+          <Pressable
+            style={({ pressed }) => [
+              styles.preferenceRow,
+              pressed && styles.preferenceRowPressed,
+            ]}
+            onPress={handleLanguagePress}
+          >
+            <View style={styles.preferenceLeft}>
+              <Text style={styles.preferenceTitle}>Language</Text>
+              <Text style={styles.preferenceSubtitle}>
+                Multi-language support coming soon
+              </Text>
+            </View>
+            <ChevronRight size={18} color="#666666" />
+          </Pressable>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{STRINGS.MEMBERSHIP_TITLE}</Text>
-
-          <View style={styles.tierInfoCard}>
-            <View style={styles.tierInfoHeader}>
-              <Text style={styles.tierInfoTitle}>{STRINGS.TIER_GUEST_NAME}</Text>
-              <Text style={styles.tierInfoPrice}>{STRINGS.TIER_GUEST_PRICE}</Text>
-            </View>
-            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_GUEST_FEATURE_1}</Text>
-            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_GUEST_FEATURE_2}</Text>
-          </View>
-
-          <View style={styles.tierInfoCard}>
-            <View style={styles.tierInfoHeader}>
-              <Text style={styles.tierInfoTitle}>{STRINGS.TIER_FREE_NAME}</Text>
-              <Text style={styles.tierInfoPrice}>{STRINGS.TIER_FREE_PRICE}</Text>
-            </View>
-            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_FREE_FEATURE_1}</Text>
-            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_FREE_FEATURE_2}</Text>
-            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_FREE_FEATURE_3}</Text>
-          </View>
-
-          <View style={[styles.tierInfoCard, styles.tierInfoCardPlus]}>
-            <View style={styles.tierInfoHeader}>
-              <View style={styles.tierTitleRow}>
-                <Text style={styles.tierInfoTitle}>{STRINGS.TIER_PLUS_NAME}</Text>
-                <Crown size={18} color="#FFD700" />
-              </View>
-              <Text style={styles.tierInfoPrice}>{STRINGS.TIER_PLUS_PRICE}</Text>
-            </View>
-            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_PLUS_FEATURE_1}</Text>
-            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_PLUS_FEATURE_2}</Text>
-            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_PLUS_FEATURE_3}</Text>
-            <Text style={styles.tierInfoFeature}>{STRINGS.TIER_PLUS_FEATURE_4}</Text>
-          </View>
-        </View>
-
-        <View style={styles.disclaimer}>
-          <Info size={16} color="#999999" />
-          <Text style={styles.disclaimerText}>
-            {STRINGS.DISCLAIMER}
-          </Text>
+        <View style={styles.versionContainer}>
+          <Text style={styles.versionText}>Gayifiers v0.1 (Preview)</Text>
         </View>
 
         <View style={styles.bottomPadding} />
@@ -180,7 +161,7 @@ const styles = StyleSheet.create({
   settingsButtonPressed: {
     opacity: 0.7,
   },
-  profileCard: {
+  identityCard: {
     backgroundColor: '#0A0A0A',
     marginHorizontal: 20,
     borderRadius: 16,
@@ -188,146 +169,116 @@ const styles = StyleSheet.create({
     borderColor: '#1A1A1A',
     padding: 24,
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: 32,
   },
   avatarCircle: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#1A1A1A',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
     borderWidth: 2,
+    borderColor: '#2A2A2A',
   },
-  userName: {
-    fontSize: 24,
+  identityTitle: {
+    fontSize: 20,
     fontWeight: '700',
     color: '#FFFFFF',
+    marginBottom: 8,
+  },
+  identitySubtitle: {
+    fontSize: 14,
+    color: '#999999',
+    textAlign: 'center',
+    lineHeight: 20,
     marginBottom: 12,
   },
-  tierBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 16,
-    gap: 6,
-    borderWidth: 1,
-  },
-  tierText: {
-    fontSize: 14,
-    fontWeight: '700',
+  identityNote: {
+    fontSize: 12,
+    color: '#666666',
+    textAlign: 'center',
+    lineHeight: 18,
   },
   section: {
-    marginBottom: 24,
+    marginBottom: 32,
+    paddingHorizontal: 20,
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: '700',
     color: '#FFFFFF',
-    paddingHorizontal: 20,
-    marginBottom: 12,
+    marginBottom: 8,
   },
-  infoCard: {
-    flexDirection: 'row',
+  sectionDescription: {
+    fontSize: 13,
+    color: '#666666',
+    marginBottom: 16,
+    lineHeight: 18,
+  },
+  membershipCard: {
     backgroundColor: '#0A0A0A',
-    marginHorizontal: 20,
     padding: 16,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#1A1A1A',
-    gap: 12,
+    marginBottom: 12,
+    opacity: 0.6,
   },
-  infoText: {
-    flex: 1,
+  membershipTier: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginBottom: 6,
+  },
+  membershipFeature: {
     fontSize: 14,
     color: '#999999',
     lineHeight: 20,
   },
-  privacyCard: {
+  preferenceRow: {
     flexDirection: 'row',
-    backgroundColor: '#0A0A0A',
-    marginHorizontal: 20,
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#1A1A1A',
-    gap: 12,
-  },
-  privacyTextContainer: {
-    flex: 1,
-  },
-  privacyTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    marginBottom: 6,
-  },
-  privacyText: {
-    fontSize: 13,
-    color: '#999999',
-    lineHeight: 19,
-  },
-  tierInfoCard: {
-    backgroundColor: '#0A0A0A',
-    marginHorizontal: 20,
-    marginBottom: 12,
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#1A1A1A',
-  },
-  tierInfoCardPlus: {
-    borderWidth: 2,
-    borderColor: '#FFD700',
-  },
-  tierInfoHeader: {
-    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-    paddingBottom: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#1A1A1A',
-  },
-  tierTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  tierInfoTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#FFFFFF',
-  },
-  tierInfoPrice: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#999999',
-  },
-  tierInfoFeature: {
-    fontSize: 14,
-    color: '#999999',
-    marginBottom: 6,
-  },
-  disclaimer: {
-    flexDirection: 'row',
+    paddingVertical: 14,
+    paddingHorizontal: 16,
     backgroundColor: '#0A0A0A',
-    marginHorizontal: 20,
-    padding: 12,
-    borderRadius: 8,
+    borderRadius: 10,
+    marginBottom: 8,
     borderWidth: 1,
     borderColor: '#1A1A1A',
-    gap: 8,
-    marginBottom: 24,
+    minHeight: 64,
   },
-  disclaimerText: {
+  preferenceRowPressed: {
+    opacity: 0.7,
+    backgroundColor: '#121212',
+  },
+  preferenceLeft: {
     flex: 1,
+  },
+  preferenceTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#FFFFFF',
+    marginBottom: 4,
+  },
+  preferenceSubtitle: {
+    fontSize: 13,
+    fontWeight: '400',
+    color: '#666666',
+    lineHeight: 18,
+  },
+  versionContainer: {
+    alignItems: 'center',
+    paddingVertical: 24,
+  },
+  versionText: {
     fontSize: 12,
     color: '#666666',
-    lineHeight: 16,
+    fontWeight: '500',
   },
   bottomPadding: {
-    height: 100,
+    height: 80,
   },
 });
