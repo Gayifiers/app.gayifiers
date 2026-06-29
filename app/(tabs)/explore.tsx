@@ -229,7 +229,7 @@ export default function ExploreScreen() {
                     {venue.description}
                   </Text>
 
-                  {venue.deal && (
+                  {venue.hasDeal && (
                     <View style={styles.dealFooter}>
                       <Gift size={12} color="#666666" />
                       <Text style={styles.dealFooterText}>{STRINGS.SCAN_QR_DEAL}</Text>

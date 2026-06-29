@@ -27,9 +27,15 @@ export default function VenueDetailScreen() {
     );
   }
 
-  const displayedDescription = isPlus ? venue.description : venue.previewText;
-  const displayedDistance = isPlus ? venue.distanceLabel : venue.areaLabel;
-  const displayedTags = isPlus ? (venue?.tags || []) : (venue?.previewTags || []);
+  const displayedDescription = isPlus
+    ? venue.description
+    : (venue.previewText ?? venue.description ?? '');
+  const displayedDistance = isPlus
+    ? venue.distanceLabel
+    : (venue.areaLabel ?? venue.area ?? venue.city);
+  const displayedTags = isPlus
+    ? venue.tags
+    : (venue.previewTags ?? venue.tags.slice(0, 2));
 
   const handleFavorite = () => {
     Alert.alert(

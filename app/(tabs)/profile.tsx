@@ -8,7 +8,7 @@ export default function ProfileScreen() {
   const router = useRouter();
 
   const handleFavoritesPress = () => {
-    Alert. alert(
+    Alert.alert(
       'Preview Feature',
       'Login is required to use Favorites in the full version.',
       [{ text: 'OK' }]
