@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable, Image, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MapPin, Flame, SlidersHorizontal, Gift } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { PLACES } from '@/data/places';
 import { getCategoryLabel, VenueCategory } from '@/constants/venues';
 import TopNavigation from '@/components/TopNavigation';
@@ -72,7 +72,7 @@ export default function ExploreScreen() {
               ]}
               onPress={handleFilterPress}
             >
-              <SlidersHorizontal size={20} color="#9D4EDD" />
+              <Ionicons name="options-outline" size={20} color="#9D4EDD" />
             </Pressable>
           </View>
         </View>
@@ -176,7 +176,7 @@ export default function ExploreScreen() {
                     />
                     {venue.isTrending && (
                       <View style={styles.trendingBadge}>
-                        <Flame size={12} color="#FFA500" />
+                        <Ionicons name="flame" size={12} color="#FFA500" />
                       </View>
                     )}
                   </View>
@@ -204,7 +204,7 @@ export default function ExploreScreen() {
 
                   <View style={styles.venueDetails}>
                     <View style={styles.locationRow}>
-                      <MapPin size={14} color="#999999" />
+                      <Ionicons name="location-outline" size={14} color="#999999" />
                       <Text style={styles.cityText}>{venue.area || STRINGS.LOCATION_BANGKOK}</Text>
                     </View>
                   </View>
@@ -215,7 +215,7 @@ export default function ExploreScreen() {
 
                   {venue.hasDeal && (
                     <View style={styles.dealFooter}>
-                      <Gift size={12} color="#666666" />
+                      <Ionicons name="gift-outline" size={12} color="#666666" />
                       <Text style={styles.dealFooterText}>Partner offer available</Text>
                     </View>
                   )}

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Pressable, Modal, Animated } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Menu, Heart, Settings, X } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function TopNavigation() {
   const router = useRouter();
@@ -20,7 +20,7 @@ export default function TopNavigation() {
     <>
       <View style={styles.container}>
         <Pressable style={styles.iconButton} onPress={() => setMenuVisible(true)}>
-          <Menu size={24} color="#FFFFFF" />
+          <Ionicons name="menu" size={24} color="#FFFFFF" />
         </Pressable>
 
         <View style={styles.centerContent}>
@@ -47,7 +47,7 @@ export default function TopNavigation() {
               <View style={styles.menuHeader}>
                 <Text style={styles.menuTitle}>Menu</Text>
                 <Pressable style={styles.closeButton} onPress={() => setMenuVisible(false)}>
-                  <X size={24} color="#FFFFFF" />
+                  <Ionicons name="close" size={24} color="#FFFFFF" />
                 </Pressable>
               </View>
 
@@ -69,7 +69,7 @@ export default function TopNavigation() {
                     router.push('/(tabs)/favorites');
                   }}
                 >
-                  <Heart size={18} color="#FFFFFF" />
+                  <Ionicons name="heart-outline" size={18} color="#FFFFFF" />
                   <Text style={styles.menuItemText}>Favorites</Text>
                 </Pressable>
 
@@ -80,7 +80,7 @@ export default function TopNavigation() {
                     setTimeout(() => router.push('/settings'), 300);
                   }}
                 >
-                  <Settings size={18} color="#FFFFFF" />
+                  <Ionicons name="settings-outline" size={18} color="#FFFFFF" />
                   <Text style={styles.menuItemText}>Settings</Text>
                 </Pressable>
               </View>
