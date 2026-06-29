@@ -10,8 +10,16 @@ export interface Place {
   hasDeal: boolean;
   isTrending: boolean;
   description?: string;
+  previewText?: string;
   distanceLabel?: string;
+  areaLabel?: string;
+  previewTags?: string[];
+  membershipHint?: string;
   imageUrl?: string;
+  deal?: {
+    badge: string;
+    description: string;
+  };
 }
 
 export const PLACES: Place[] = [
