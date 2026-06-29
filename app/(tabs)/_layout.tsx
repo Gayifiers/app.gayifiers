@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Compass, Heart, User } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Platform } from 'react-native';
 
 export default function TabLayout() {
@@ -30,7 +30,7 @@ export default function TabLayout() {
         options={{
           title: 'Explore',
           tabBarIcon: ({ color, size }) => (
-            <Compass size={size} color={color} />
+            <Ionicons name="compass-outline" size={size} color={color} />
           ),
         }}
       />
@@ -39,7 +39,7 @@ export default function TabLayout() {
         options={{
           title: 'Favorites',
           tabBarIcon: ({ color, size }) => (
-            <Heart size={size} color={color} />
+            <Ionicons name="heart-outline" size={size} color={color} />
           ),
         }}
       />
@@ -48,13 +48,10 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, size }) => (
-            <User size={size} color={color} />
+            <Ionicons name="person-outline" size={size} color={color} />
           ),
         }}
       />
-      {/* Hidden until post-approval features ship */}
-      <Tabs.Screen name="trending" options={{ href: null }} />
-      <Tabs.Screen name="deals" options={{ href: null }} />
     </Tabs>
   );
 }

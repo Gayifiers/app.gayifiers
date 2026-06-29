@@ -14,21 +14,13 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.uncletullio.gayifiers",
-      "buildNumber": "17"
+      "buildNumber": "18"
     },
     "android": {
       "package": "com.gayifiers.app.gayifiers"
     },
     "plugins": [
-      "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "backgroundColor": "#000000",
-          "image": "./assets/icon.png",
-          "imageWidth": 120
-        }
-      ]
+      "expo-router"
     ],
     "experiments": {
       "typedRoutes": true

@@ -5,6 +5,13 @@ type FavoritesContextValue = ReturnType<typeof useFavorites>;
 
 const FavoritesContext = createContext<FavoritesContextValue | null>(null);
 
+const emptyFavorites: FavoritesContextValue = {
+  favoriteIds: [],
+  loaded: true,
+  isFavorite: () => false,
+  toggleFavorite: async () => {},
+};
+
 export function FavoritesProvider({ children }: { children: ReactNode }) {
   const value = useFavorites();
   return (
@@ -14,8 +21,5 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
 export function useFavoritesContext() {
   const context = useContext(FavoritesContext);
-  if (!context) {
-    throw new Error('useFavoritesContext must be used within FavoritesProvider');
-  }
-  return context;
+  return context ?? emptyFavorites;
 }
