@@ -24,7 +24,7 @@
 | Project | Path | 用途 |
 |---------|------|------|
 | **iOS App（呢份 handover）** | `~/Projects/app.gayifiers` | App Store / TestFlight |
-| **Web Map** | `~/Downloads/gayifiers-map` | map.gayifiers.com（Supabase / Stripe） |
+| **Web Map** | `~/Downloads/gayifiers-map` | map.gayifiers.com — 見該 repo **`HANDOVER.md`** |
 | **❌ 勿用** | `~/Developer/app.gayifiers` | iCloud 搞壞 `.git`，EAS 會 fail |
 
 ---
