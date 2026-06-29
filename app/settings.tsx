@@ -1,54 +1,13 @@
-import { View, Text, StyleSheet, Pressable, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 
+const PRIVACY_URL = 'https://www.uncletullio.co.uk/gayifiers/privacy';
+const SUPPORT_URL = 'https://www.uncletullio.co.uk/gayifiers/support';
+
 export default function SettingsScreen() {
   const router = useRouter();
-
-  const handleAccountPress = () => {
-    Alert.alert(
-      'Preview Feature',
-      'Account login and membership management will be available in the full version.',
-      [{ text: 'OK' }]
-    );
-  };
-
-  const handleMembershipPress = () => {
-    Alert.alert(
-      'Preview Feature',
-      'Membership features will be unlocked after login in the full version.',
-      [{ text: 'OK' }]
-    );
-  };
-
-  const handleFavoritesPress = () => {
-    router.push('/(tabs)/favorites');
-  };
-
-  const handleNotificationsPress = () => {
-    Alert.alert(
-      'Preview Feature',
-      'Notifications will be available in a future update.',
-      [{ text: 'OK' }]
-    );
-  };
-
-  const handleLanguagePress = () => {
-    Alert.alert(
-      'Preview Feature',
-      'Language switching will be available in a future update. Currently the app follows your system language.',
-      [{ text: 'OK' }]
-    );
-  };
-
-  const handleAboutPress = () => {
-    Alert.alert(
-      'Gayifiers',
-      'Gayifiers is a curated guide for international gay travelers.\n\nThis is an MVP preview version.',
-      [{ text: 'OK' }]
-    );
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -62,38 +21,6 @@ export default function SettingsScreen() {
 
       <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Account</Text>
-
-          <Pressable
-            style={({ pressed }) => [
-              styles.settingsRow,
-              pressed && styles.settingsRowPressed,
-            ]}
-            onPress={handleAccountPress}
-          >
-            <Text style={styles.rowTitle}>Account</Text>
-            <View style={styles.rowRight}>
-              <Text style={styles.rowValue}>Guest</Text>
-              <ChevronRight size={18} color="#666666" />
-            </View>
-          </Pressable>
-
-          <Pressable
-            style={({ pressed }) => [
-              styles.settingsRow,
-              pressed && styles.settingsRowPressed,
-            ]}
-            onPress={handleMembershipPress}
-          >
-            <Text style={styles.rowTitle}>Membership</Text>
-            <View style={styles.rowRight}>
-              <Text style={styles.rowValue}>Not activated</Text>
-              <ChevronRight size={18} color="#666666" />
-            </View>
-          </Pressable>
-        </View>
-
-        <View style={styles.section}>
           <Text style={styles.sectionTitle}>Preferences</Text>
 
           <Pressable
@@ -101,45 +28,28 @@ export default function SettingsScreen() {
               styles.settingsRow,
               pressed && styles.settingsRowPressed,
             ]}
-            onPress={handleFavoritesPress}
+            onPress={() => router.push('/(tabs)/favorites')}
           >
             <View style={styles.rowLeft}>
               <Text style={styles.rowTitle}>Favorites</Text>
-              <Text style={styles.rowSubtitle}>Save places for later</Text>
+              <Text style={styles.rowSubtitle}>View your saved venues</Text>
             </View>
             <ChevronRight size={18} color="#666666" />
           </Pressable>
 
-          <Pressable
-            style={({ pressed }) => [
-              styles.settingsRow,
-              pressed && styles.settingsRowPressed,
-            ]}
-            onPress={handleNotificationsPress}
-          >
-            <Text style={styles.rowTitle}>Notifications</Text>
-            <View style={styles.rowRight}>
-              <Text style={styles.rowValue}>Off</Text>
-              <ChevronRight size={18} color="#666666" />
+          <View style={styles.settingsRowDisabled}>
+            <View style={styles.rowLeft}>
+              <Text style={styles.rowTitle}>Notifications</Text>
+              <Text style={styles.rowSubtitle}>Off</Text>
             </View>
-          </Pressable>
+          </View>
 
-          <Pressable
-            style={({ pressed }) => [
-              styles.settingsRow,
-              pressed && styles.settingsRowPressed,
-            ]}
-            onPress={handleLanguagePress}
-          >
+          <View style={styles.settingsRowDisabled}>
             <View style={styles.rowLeft}>
               <Text style={styles.rowTitle}>App Language</Text>
-              <Text style={styles.rowSubtitle}>Multi-language support coming soon</Text>
+              <Text style={styles.rowSubtitle}>Follows your device language (English)</Text>
             </View>
-            <View style={styles.rowRight}>
-              <Text style={styles.rowValue}>System Default</Text>
-              <ChevronRight size={18} color="#666666" />
-            </View>
-          </Pressable>
+          </View>
         </View>
 
         <View style={styles.section}>
@@ -150,15 +60,26 @@ export default function SettingsScreen() {
               styles.settingsRow,
               pressed && styles.settingsRowPressed,
             ]}
-            onPress={handleAboutPress}
+            onPress={() => Linking.openURL(SUPPORT_URL)}
           >
-            <Text style={styles.rowTitle}>About Gayifiers</Text>
+            <Text style={styles.rowTitle}>Support</Text>
+            <ChevronRight size={18} color="#666666" />
+          </Pressable>
+
+          <Pressable
+            style={({ pressed }) => [
+              styles.settingsRow,
+              pressed && styles.settingsRowPressed,
+            ]}
+            onPress={() => Linking.openURL(PRIVACY_URL)}
+          >
+            <Text style={styles.rowTitle}>Privacy policy</Text>
             <ChevronRight size={18} color="#666666" />
           </Pressable>
 
           <View style={styles.settingsRowDisabled}>
             <Text style={styles.rowTitle}>App Version</Text>
-            <Text style={styles.rowValueDisabled}>v0.1.0 (MVP)</Text>
+            <Text style={styles.rowValueDisabled}>1.0.0</Text>
           </View>
         </View>
       </ScrollView>
@@ -237,7 +158,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#1A1A1A',
     minHeight: 56,
-    opacity: 0.5,
+    opacity: 0.85,
   },
   rowLeft: {
     flex: 1,
@@ -252,16 +173,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#666666',
     marginTop: 2,
-  },
-  rowRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  rowValue: {
-    fontSize: 15,
-    fontWeight: '400',
-    color: '#999999',
   },
   rowValueDisabled: {
     fontSize: 15,

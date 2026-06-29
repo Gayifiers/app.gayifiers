@@ -1,0 +1,21 @@
+# Old isolated backup — not needed for builds
+__isolate/
+
+# Secrets — never upload to EAS
+_secrets/
+*.p8
+*.pem
+.env
+.env.*
+
+# Duplicate lockfiles (keep package-lock.json)
+package-lock 2.json
+package-lock 3.json
+
+# Android — iOS-only app for now
+android/
+
+# Local / IDE
+.git/
+.expo/
+.DS_Store

@@ -1,27 +1,14 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { User, ChevronRight, Settings } from 'lucide-react-native';
+import { User, Settings } from 'lucide-react-native';
 import TopNavigation from '@/components/TopNavigation';
 import { useRouter } from 'expo-router';
 
+const PRIVACY_URL = 'https://www.uncletullio.co.uk/gayifiers/privacy';
+const SUPPORT_URL = 'https://www.uncletullio.co.uk/gayifiers/support';
+
 export default function ProfileScreen() {
   const router = useRouter();
-
-  const handleFavoritesPress = () => {
-    Alert. alert(
-      'Preview Feature',
-      'Login is required to use Favorites in the full version.',
-      [{ text: 'OK' }]
-    );
-  };
-
-  const handleLanguagePress = () => {
-    Alert.alert(
-      'Preview Feature',
-      'Language switching will be available in a future update.',
-      [{ text: 'OK' }]
-    );
-  };
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
@@ -44,81 +31,37 @@ export default function ProfileScreen() {
           <View style={styles.avatarCircle}>
             <User size={32} color="#666666" />
           </View>
-          <Text style={styles.identityTitle}>Visitor (Preview Mode)</Text>
+          <Text style={styles.identityTitle}>Welcome to Gayifiers</Text>
           <Text style={styles.identitySubtitle}>
-            You're currently browsing Gayifiers as a visitor.
-          </Text>
-          <Text style={styles.identityNote}>
-            Login and membership features will be available in the full version.
+            Browse curated LGBTQ+ friendly venues in Bangkok. No account required.
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Membership Levels</Text>
+          <Text style={styles.sectionTitle}>About this app</Text>
           <Text style={styles.sectionDescription}>
-            Future access levels will include:
+            Gayifiers helps travelers discover welcoming bars, clubs, saunas, and wellness venues with clear descriptions, photos, and area context.
           </Text>
-
-          <View style={styles.membershipCard}>
-            <Text style={styles.membershipTier}>Visitor</Text>
-            <Text style={styles.membershipFeature}>
-              Browse venues and previews
-            </Text>
-          </View>
-
-          <View style={styles.membershipCard}>
-            <Text style={styles.membershipTier}>Member</Text>
-            <Text style={styles.membershipFeature}>
-              Save favorites and unlock full venue details
-            </Text>
-          </View>
-
-          <View style={styles.membershipCard}>
-            <Text style={styles.membershipTier}>Pro</Text>
-            <Text style={styles.membershipFeature}>
-              Priority access, advanced filters, and exclusive content
-            </Text>
-          </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Preferences</Text>
-
+          <Text style={styles.sectionTitle}>Support</Text>
           <Pressable
-            style={({ pressed }) => [
-              styles.preferenceRow,
-              pressed && styles.preferenceRowPressed,
-            ]}
-            onPress={handleFavoritesPress}
+            style={({ pressed }) => [styles.linkRow, pressed && styles.linkRowPressed]}
+            onPress={() => Linking.openURL(SUPPORT_URL)}
           >
-            <View style={styles.preferenceLeft}>
-              <Text style={styles.preferenceTitle}>Favorites</Text>
-              <Text style={styles.preferenceSubtitle}>
-                Save places you love (login required)
-              </Text>
-            </View>
-            <ChevronRight size={18} color="#666666" />
+            <Text style={styles.linkTitle}>Contact support</Text>
           </Pressable>
-
           <Pressable
-            style={({ pressed }) => [
-              styles.preferenceRow,
-              pressed && styles.preferenceRowPressed,
-            ]}
-            onPress={handleLanguagePress}
+            style={({ pressed }) => [styles.linkRow, pressed && styles.linkRowPressed]}
+            onPress={() => Linking.openURL(PRIVACY_URL)}
           >
-            <View style={styles.preferenceLeft}>
-              <Text style={styles.preferenceTitle}>Language</Text>
-              <Text style={styles.preferenceSubtitle}>
-                Multi-language support coming soon
-              </Text>
-            </View>
-            <ChevronRight size={18} color="#666666" />
+            <Text style={styles.linkTitle}>Privacy & data</Text>
           </Pressable>
         </View>
 
         <View style={styles.versionContainer}>
-          <Text style={styles.versionText}>Gayifiers v0.1 (Preview)</Text>
+          <Text style={styles.versionText}>Gayifiers 1.0</Text>
         </View>
 
         <View style={styles.bottomPadding} />
@@ -156,7 +99,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#2A2A2A',
+    borderColor: '#2A2A2F',
   },
   settingsButtonPressed: {
     opacity: 0.7,
@@ -193,13 +136,6 @@ const styles = StyleSheet.create({
     color: '#999999',
     textAlign: 'center',
     lineHeight: 20,
-    marginBottom: 12,
-  },
-  identityNote: {
-    fontSize: 12,
-    color: '#666666',
-    textAlign: 'center',
-    lineHeight: 18,
   },
   section: {
     marginBottom: 32,
@@ -212,35 +148,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   sectionDescription: {
-    fontSize: 13,
-    color: '#666666',
-    marginBottom: 16,
-    lineHeight: 18,
-  },
-  membershipCard: {
-    backgroundColor: '#0A0A0A',
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#1A1A1A',
-    marginBottom: 12,
-    opacity: 0.6,
-  },
-  membershipTier: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    marginBottom: 6,
-  },
-  membershipFeature: {
     fontSize: 14,
     color: '#999999',
-    lineHeight: 20,
+    lineHeight: 22,
   },
-  preferenceRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  linkRow: {
     paddingVertical: 14,
     paddingHorizontal: 16,
     backgroundColor: '#0A0A0A',
@@ -248,26 +160,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     borderWidth: 1,
     borderColor: '#1A1A1A',
-    minHeight: 64,
   },
-  preferenceRowPressed: {
+  linkRowPressed: {
     opacity: 0.7,
-    backgroundColor: '#121212',
   },
-  preferenceLeft: {
-    flex: 1,
-  },
-  preferenceTitle: {
+  linkTitle: {
     fontSize: 16,
     fontWeight: '500',
     color: '#FFFFFF',
-    marginBottom: 4,
-  },
-  preferenceSubtitle: {
-    fontSize: 13,
-    fontWeight: '400',
-    color: '#666666',
-    lineHeight: 18,
   },
   versionContainer: {
     alignItems: 'center',

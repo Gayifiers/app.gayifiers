@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable, Image, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MapPin, Flame, SlidersHorizontal, Gift, Lock, Sparkles } from 'lucide-react-native';
+import { MapPin, Flame, SlidersHorizontal, Gift } from 'lucide-react-native';
 import { PLACES } from '@/data/places';
-import { MOCK_USER, getCategoryLabel, VenueCategory } from '@/constants/venues';
+import { getCategoryLabel, VenueCategory } from '@/constants/venues';
 import TopNavigation from '@/components/TopNavigation';
 import { STRINGS } from '@/constants/strings';
 import { useRouter } from 'expo-router';
@@ -38,8 +38,6 @@ export default function ExploreScreen() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<VenueCategory | 'all'>('all');
   const [selectedLocation, setSelectedLocation] = useState(STRINGS.LOCATION_ALL_AREAS);
-  const userTier = MOCK_USER.membershipTier;
-  const isPlus = userTier === 'plus';
 
   const filteredVenues = PLACES.filter(venue => {
     const categoryMatch = selectedCategory === 'all' || venue.category === selectedCategory;
@@ -48,15 +46,11 @@ export default function ExploreScreen() {
   });
 
   const handleFilterPress = () => {
-    if (!isPlus) {
-      Alert.alert(
-        STRINGS.ALERT_PLUS_FEATURE_TITLE,
-        STRINGS.ALERT_PLUS_FEATURE_MESSAGE,
-        [{ text: STRINGS.ALERT_OK }]
-      );
-    } else {
-      Alert.alert(STRINGS.ALERT_FILTERS_TITLE, STRINGS.ALERT_FILTERS_MESSAGE);
-    }
+    Alert.alert(
+      STRINGS.ALERT_FILTERS_TITLE,
+      'Use the category chips below to filter venues.',
+      [{ text: STRINGS.ALERT_OK }]
+    );
   };
 
   return (
@@ -78,12 +72,12 @@ export default function ExploreScreen() {
               ]}
               onPress={handleFilterPress}
             >
-              <SlidersHorizontal size={20} color={isPlus ? '#9D4EDD' : '#666666'} />
+              <SlidersHorizontal size={20} color="#9D4EDD" />
             </Pressable>
           </View>
         </View>
 
-        {/* Current City & Coming Soon */}
+        {/* Current city & future destinations */}
         <View style={styles.citySection}>
           <View style={styles.currentCityBanner}>
             <Text style={styles.currentCityEmoji}>{CURRENT_CITY.emoji}</Text>
@@ -93,7 +87,7 @@ export default function ExploreScreen() {
           </View>
 
           <View style={styles.comingSoonCompact}>
-            <Text style={styles.comingSoonCompactTitle}>Coming Soon</Text>
+            <Text style={styles.comingSoonCompactTitle}>More destinations</Text>
             <ScrollView 
               horizontal 
               showsHorizontalScrollIndicator={false}
@@ -200,39 +194,29 @@ export default function ExploreScreen() {
                     </View>
                   </View>
 
-                  {/* Member Insights Section - Replaces Tags */}
-                  {isPlus ? (
-                    <View style={styles.memberInsightBox}>
-                      <Sparkles size={14} color="#9D4EDD" />
-                      <Text style={styles.memberInsightText}>
-                        Popular with community
-                      </Text>
-                    </View>
-                  ) : (
-                    <View style={styles.lockedInsightBox}>
-                      <Lock size={12} color="#666666" />
-                      <Text style={styles.lockedInsightText}>
-                        🔒 Member insights available
-                      </Text>
-                    </View>
-                  )}
+                  <View style={styles.tagsRow}>
+                    {venue.tags.slice(0, 3).map((tag) => (
+                      <View key={tag} style={styles.tagChip}>
+                        <Text style={styles.tagChipText}>{tag}</Text>
+                      </View>
+                    ))}
+                  </View>
 
                   <View style={styles.venueDetails}>
                     <View style={styles.locationRow}>
                       <MapPin size={14} color="#999999" />
                       <Text style={styles.cityText}>{venue.area || STRINGS.LOCATION_BANGKOK}</Text>
                     </View>
-                    <Text style={styles.distanceText}>{venue.distanceLabel}</Text>
                   </View>
 
                   <Text style={styles.venueDescription} numberOfLines={2}>
                     {venue.description}
                   </Text>
 
-                  {venue.deal && (
+                  {venue.hasDeal && (
                     <View style={styles.dealFooter}>
                       <Gift size={12} color="#666666" />
-                      <Text style={styles.dealFooterText}>{STRINGS.SCAN_QR_DEAL}</Text>
+                      <Text style={styles.dealFooterText}>Partner offer available</Text>
                     </View>
                   )}
                 </View>
@@ -408,47 +392,28 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#999999',
   },
-  // New Member Insight Styles
-  memberInsightBox: {
+  tagsRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    flexWrap: 'wrap',
     gap: 6,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: 'rgba(157, 78, 221, 0.1)',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#9D4EDD',
     marginBottom: 12,
-    alignSelf: 'flex-start',
   },
-  memberInsightText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#9D4EDD',
-  },
-  lockedInsightBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: '#0A0A0A',
-    borderRadius: 10,
+  tagChip: {
+    backgroundColor: '#141414',
     borderWidth: 1,
-    borderColor: '#1A1A1A',
-    marginBottom: 12,
-    alignSelf: 'flex-start',
+    borderColor: '#2A2A2A',
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
   },
-  lockedInsightText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#666666',
+  tagChipText: {
+    fontSize: 11,
+    color: '#AAAAAA',
+    fontWeight: '500',
   },
   venueDetails: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     marginBottom: 8,
   },
   locationRow: {

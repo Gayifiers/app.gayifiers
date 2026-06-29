@@ -1,11 +1,12 @@
 import { Tabs } from 'expo-router';
-import { View, StyleSheet, Platform } from 'react-native';
-import { Compass, TrendingUp, Heart, User, Lock } from 'lucide-react-native';
+import { Compass, Heart, User } from 'lucide-react-native';
+import { Platform } from 'react-native';
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
+        lazy: true,
         headerShown: false,
         tabBarActiveTintColor: '#9D4EDD',
         tabBarInactiveTintColor: '#666666',
@@ -34,18 +35,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="trending"
-        options={{
-          title: 'Trending',
-          tabBarIcon: ({ color, size, focused }) => (
-            <View style={styles.trendingIconContainer}>
-              <TrendingUp size={size} color={color} />
-              {!focused && <Lock size={10} color="#9D4EDD" style={styles.lockBadge} />}
-            </View>
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="favorites"
         options={{
           title: 'Favorites',
@@ -63,23 +52,9 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="deals"
-        options={{
-          href: null,
-        }}
-      />
+      {/* Hidden until post-approval features ship */}
+      <Tabs.Screen name="trending" options={{ href: null }} />
+      <Tabs.Screen name="deals" options={{ href: null }} />
     </Tabs>
   );
 }
-
-const styles = StyleSheet.create({
-  trendingIconContainer: {
-    position: 'relative',
-  },
-  lockBadge: {
-    position: 'absolute',
-    top: -4,
-    right: -6,
-  },
-});
