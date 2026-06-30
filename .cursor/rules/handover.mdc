@@ -1,0 +1,36 @@
+---
+description: Gayifiers iOS app handover — read before any task
+alwaysApply: true
+---
+
+# Gayifiers iOS App — Start Here
+
+Before any task, read **`HANDOVER.md`** in this repo root.
+
+## This repo (iOS App)
+
+- **Stack:** Expo SDK 54 · EAS Build · App Store Connect
+- **Path:** `~/Projects/app.gayifiers` only — **never** `~/Developer/app.gayifiers`
+- **Build:** commit first → `eas build` → `eas submit` (build alone does not upload to Connect)
+- **Bundle ID:** `com.uncletullio.gayifiers` · App ID **6758533618**
+
+## EAS quota (conserve builds)
+
+- iOS builds are limited (e.g. 15/month on free tier)
+- **Do not** run `eas build` without user approval after local testing
+- ERRORED builds still count toward quota
+
+## App Store v1.0 scope
+
+- Bangkok mock · no login · no Trending/Plus/IAP
+- `supportsTablet: false` (iPhone only)
+- Do not re-add `app/index.tsx` with `<Redirect />` (TestFlight black screen)
+
+## Related project
+
+- **Web map:** `~/Downloads/gayifiers-map` — Next.js + Vercel, **not Expo** — read its `HANDOVER.md`
+
+## Communication
+
+- Reply in **繁體中文**
+- End sessions by updating `HANDOVER.md` §2 status and §9 todos when progress changes
