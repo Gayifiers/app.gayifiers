@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, Image, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Image, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { PLACES } from '@/data/places';
@@ -19,15 +19,6 @@ const LOCATIONS = [
   STRINGS.LOCATION_ALL_AREAS,
 ];
 
-const COMING_SOON_CITIES = [
-  { name: 'Tokyo', emoji: '🗼' },
-  { name: 'Osaka', emoji: '🏯' },
-  { name: 'Seoul', emoji: '🎎' },
-  { name: 'Taipei', emoji: '🏮' },
-  { name: 'Singapore', emoji: '🦁' },
-  { name: 'Hong Kong', emoji: '🇭🇰' },
-];
-
 const CURRENT_CITY = {
   name: 'Bangkok',
   emoji: '🇹🇭',
@@ -38,6 +29,7 @@ export default function ExploreScreen() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<VenueCategory | 'all'>('all');
   const [selectedLocation, setSelectedLocation] = useState(STRINGS.LOCATION_ALL_AREAS);
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
 
   const filteredVenues = PLACES.filter(venue => {
     const categoryMatch = selectedCategory === 'all' || venue.category === selectedCategory;
@@ -45,13 +37,7 @@ export default function ExploreScreen() {
     return categoryMatch && locationMatch;
   });
 
-  const handleFilterPress = () => {
-    Alert.alert(
-      STRINGS.ALERT_FILTERS_TITLE,
-      'Use the category chips below to filter venues.',
-      [{ text: STRINGS.ALERT_OK }]
-    );
-  };
+  const handleFilterPress = () => setFilterModalVisible(true);
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
@@ -77,29 +63,13 @@ export default function ExploreScreen() {
           </View>
         </View>
 
-        {/* Current city & future destinations */}
+        {/* Current city */}
         <View style={styles.citySection}>
           <View style={styles.currentCityBanner}>
             <Text style={styles.currentCityEmoji}>{CURRENT_CITY.emoji}</Text>
             <Text style={styles.currentCityText}>
               Currently showing venues in <Text style={styles.currentCityName}>Bangkok</Text>
             </Text>
-          </View>
-
-          <View style={styles.comingSoonCompact}>
-            <Text style={styles.comingSoonCompactTitle}>More destinations</Text>
-            <ScrollView 
-              horizontal 
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.comingSoonScroll}
-            >
-              {COMING_SOON_CITIES.map((city, index) => (
-                <View key={index} style={styles.cityChip}>
-                  <Text style={styles.cityChipEmoji}>{city.emoji}</Text>
-                  <Text style={styles.cityChipName}>{city.name}</Text>
-                </View>
-              ))}
-            </ScrollView>
           </View>
         </View>
 
@@ -227,6 +197,40 @@ export default function ExploreScreen() {
 
         <View style={styles.bottomPadding} />
       </ScrollView>
+
+      <Modal
+        visible={filterModalVisible}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setFilterModalVisible(false)}
+      >
+        <Pressable style={styles.filterModalOverlay} onPress={() => setFilterModalVisible(false)}>
+          <Pressable style={styles.filterModalSheet} onPress={(e) => e.stopPropagation()}>
+            <View style={styles.filterModalHeader}>
+              <Text style={styles.filterModalTitle}>{STRINGS.ALERT_FILTERS_TITLE}</Text>
+              <Pressable onPress={() => setFilterModalVisible(false)}>
+                <Ionicons name="close" size={24} color="#FFFFFF" />
+              </Pressable>
+            </View>
+
+            {CATEGORIES.map((category) => (
+              <Pressable
+                key={category.value}
+                style={styles.filterModalRow}
+                onPress={() => {
+                  setSelectedCategory(category.value);
+                  setFilterModalVisible(false);
+                }}
+              >
+                <Text style={styles.filterModalRowText}>{category.label}</Text>
+                {selectedCategory === category.value && (
+                  <Ionicons name="checkmark" size={20} color="#9D4EDD" />
+                )}
+              </Pressable>
+            ))}
+          </Pressable>
+        </Pressable>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -478,41 +482,46 @@ const styles = StyleSheet.create({
     color: '#9D4EDD',
     fontWeight: '700',
   },
-  comingSoonCompact: {
-    marginBottom: 8,
-  },
-  comingSoonCompactTitle: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#666666',
-    marginBottom: 12,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  comingSoonScroll: {
-    gap: 8,
-  },
-  cityChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#0A0A0A',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#1A1A1A',
-    gap: 6,
-    opacity: 0.6,
-  },
-  cityChipEmoji: {
-    fontSize: 16,
-  },
-  cityChipName: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#FFFFFF',
-  },
   bottomPadding: {
     height: 100,
+  },
+  filterModalOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  },
+  filterModalSheet: {
+    backgroundColor: '#0A0A0A',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderWidth: 1,
+    borderColor: '#1A1A1A',
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    paddingBottom: 40,
+  },
+  filterModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  filterModalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  filterModalRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 14,
+    borderTopWidth: 1,
+    borderTopColor: '#1A1A1A',
+  },
+  filterModalRowText: {
+    fontSize: 15,
+    color: '#FFFFFF',
+    fontWeight: '500',
   },
 });

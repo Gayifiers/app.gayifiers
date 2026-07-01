@@ -47,7 +47,7 @@ export default function SettingsScreen() {
           <View style={styles.settingsRowDisabled}>
             <View style={styles.rowLeft}>
               <Text style={styles.rowTitle}>App Language</Text>
-              <Text style={styles.rowSubtitle}>Follows your device language (English)</Text>
+              <Text style={styles.rowSubtitle}>English</Text>
             </View>
           </View>
         </View>
