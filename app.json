@@ -14,7 +14,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.uncletullio.gayifiers",
-      "buildNumber": "21"
+      "buildNumber": "22"
     },
     "android": {
       "package": "com.gayifiers.app.gayifiers"
