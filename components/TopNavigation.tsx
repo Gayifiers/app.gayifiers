@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Pressable, Modal, Animated } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function TopNavigation() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const [menuVisible, setMenuVisible] = useState(false);
   const slideAnim = useRef(new Animated.Value(-280)).current;
 
@@ -44,7 +46,7 @@ export default function TopNavigation() {
         <Pressable style={styles.modalOverlay} onPress={() => setMenuVisible(false)}>
           <Animated.View style={[styles.menuContainer, { transform: [{ translateX: slideAnim }] }]}>
             <Pressable style={styles.menuContent} onPress={(e) => e.stopPropagation()}>
-              <View style={styles.menuHeader}>
+              <View style={[styles.menuHeader, { paddingTop: insets.top + 16 }]}>
                 <Text style={styles.menuTitle}>Menu</Text>
                 <Pressable style={styles.closeButton} onPress={() => setMenuVisible(false)}>
                   <Ionicons name="close" size={24} color="#FFFFFF" />
