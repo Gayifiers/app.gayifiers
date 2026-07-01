@@ -179,9 +179,10 @@ eas submit --platform ios --latest
 ### Review Notes 模板
 
 ```
-No demo account required. Open the app to Explore Bangkok venues.
-Tap a venue for details; use the heart icon to save favorites.
-No sign-in required. iPhone-optimized app (supportsTablet: false).
+No demo account is required. Open the app to browse Bangkok venues on
+the Explore tab. Tap any venue for details; use the heart icon to save
+favorites. The app does not require sign-in and does not request
+location access in this version.
 ```
 
 ---
