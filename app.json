@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "scheme": "gayifiers",
     "userInterfaceStyle": "dark",
-    "newArchEnabled": false,
+    "newArchEnabled": true,
     "assetBundlePatterns": [
       "**/*"
     ],
