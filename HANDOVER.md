@@ -133,7 +133,7 @@
 ### App Store 唔好做
 
 - ❌ 改 bundle ID
-- ❌ 用 duplicate app **Gayifiers (94c6dc)** / `com.gayifiers.app.gayifiers`
+- ❌ 用 duplicate app **Gayifiers (94c6dc)** / `com.gayifiers.app.gayifiers`（2026-10-20 已移除，Apple ID `6785131537`）
 - ❌ 審核中改 metadata / upload 新 build（除非 Apple 要求）
 - ❌ Submit Build 15–19（已知 bad）
 
@@ -237,7 +237,7 @@ location access in this version.
 | 3 | 過審 → Manual release |
 | 4 | v1.1：Supabase、IAP、Trending、真正接駁 `constants/strings.ts` 已寫低嘅 `STRINGS_ZH_TW` |
 | 5 | map.gayifiers.com production + 會員打通 |
-| 6 | 清理 duplicate Connect app (94c6dc) |
+| 6 | ~~清理 duplicate Connect app (94c6dc)~~ ✅ 2026-10-20 已在 App Store Connect Remove App |
 
 ---
 
